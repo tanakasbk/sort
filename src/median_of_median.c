@@ -13,13 +13,38 @@ void swap(int *p, int *q){
   *q = tmp;
 }
 
+//  中央値を探し先頭に移動
+void median(int A[], int n){
+  if(n > 5){
+    int size = n / 5;
+    for(int i = 0; i < size; i++){
+      median(A + i * 5, 5);
+    }
+    median(A, size);
+    return;
+  }else{
+    int m = (n - 1) / 2;
+    for(int i = 0; i <= m; i++){
+      int minIndex = i;
+      for(int j = i + i; j < n; j++){
+        if(A[minIndex] > A[j])swap(A + minIndex, A + j);
+      }
+    }
+    swap(A, A + m);
+    return;
+  }
+}
+
+/*
+A[0], A[1], ..., A[n-1] の中でk+1番目に小さい値を返す関数
+ただし、Aの中身は書き換えてしまう。
+*/
 int quick_select(int A[], int n, int k){
   int i, j, pivot;
 
-// 真ん中の要素をピボットとする
-  pivot = A[n/2];
-  A[n/2] = A[0];
-  A[0] = pivot;
+// ピボットを選択する
+  median(A, n);
+  pivot = A[0];
   for(i = j = 1; i < n; i++){
     if(A[i] <= pivot){
       swap(A+i, A+j);
@@ -32,6 +57,17 @@ int quick_select(int A[], int n, int k){
   else return quick_select(A+1, j-1, k);
 }
 
+/*
+//  medianテスト用
+int main(){
+  int size = 11;
+  for(int i = 0; i < size; i++){
+    A[i] = i + 1;
+  }
+  printf("%d\n" ,*median(A, size));
+}
+*/
+
 
 int main(){
   int i;
@@ -43,5 +79,6 @@ int main(){
   for(i=0;i<N;i++){
     if(quick_select(A, N, i) != i) printf("ERROR %d %d\n", i, quick_select(A, N, i));
 //    printf("%d th element is %d\n", i, quick_select(A, N, i));
+   fflush(stdout);
   }
 }

@@ -57,17 +57,6 @@ int quick_select(int A[], int n, int k){
   else return quick_select(A+1, j-1, k);
 }
 
-/*
-//  medianテスト用
-int main(){
-  int size = 11;
-  for(int i = 0; i < size; i++){
-    A[i] = i + 1;
-  }
-  printf("%d\n" ,*median(A, size));
-}
-*/
-
 
 int main(){
   int i;

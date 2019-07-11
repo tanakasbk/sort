@@ -17,31 +17,36 @@ void swap(int *p, int *q){
 A[0], A[1], ..., A[n-1] をソートして昇順に書き換える関数
 */
 void quick_sort(int A[], int n){
-    int pivot, i, j, k;
-    pivot = A[0];
-    for(i = j = k = 1; i < n; i++){
-        if(A[i] < pivot){
-          swap(A + i, A + j);
-          j++;
-          k++;
-        }else if(A[i] == pivot){
-          k++;
-        }
+  int pivot, i, l, r;
+  pivot = A[0];
+
+  i = 1, l = 0, r = n-1;
+  while(i <= r){
+    if(A[i] < pivot){
+      swap(A+i, A+l);
+      l++;
+      i++;
+    }else if(A[i] > pivot){
+      swap(A+i, A+r);
+      r--;
+    }else{
+      i++;
     }
-    swap(A + j - 1, A);
-    if(j > 2)quick_sort(A, j - 1);
-    if(k < n)quick_sort(A + k, n - k);
+  }
+  
+  if(l > 1)quick_sort(A, l);
+  if(r < n-2)quick_sort(A+r+1, n-r-1);
 }
 
 int main(){
   int i;
-/*
-  A[0] = 0;
-  A[1] = 17; //原始元
-  for(i=2;i<N;i++){
-    A[i] = (long long int) A[i-1] * A[1] % N;
-  }
-*/
+
+  // A[0] = 0;
+  // A[1] = 17; //原始元
+  // for(i=2;i<N;i++){
+  //   A[i] = (long long int) A[i-1] * A[1] % N;
+  // }
+
 
 // すべての要素が同じ場合でも計算が早く終わるか確認する
     for(i=0;i<N;i++){

@@ -38,15 +38,9 @@ int quick_select(int A[], int n, int k){
     }
   }
 
-  if(r < k){
-    return quick_select(A+r+1, n-r-1, k-r-1);
-  }
-  else if(l > k){
-    return quick_select(A, l, k);
-  }
-  else{
-    return pivot;
-  }
+  if(r < k) return quick_select(A+r+1, n-r-1, k-r-1);
+  else if(l > k) return quick_select(A, l, k);
+  else return pivot;
 }
 
 

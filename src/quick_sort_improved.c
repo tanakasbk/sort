@@ -17,33 +17,32 @@ void swap(int *p, int *q){
 A[0], A[1], ..., A[n-1] をソートして昇順に書き換える関数
 */
 void quick_sort(int A[], int n){
-    int pivot, i, j;
+    int pivot, i, j, k;
     pivot = A[0];
-    for(i = j = 1; i < n; i++){
+    for(i = j = k = 1; i < n; i++){
         if(A[i] < pivot){
-            swap(A + i, A + j);
-            j++;
+          swap(A + i, A + j);
+          j++;
+          k++;
+        }else if(A[i] == pivot){
+          k++;
         }
     }
     swap(A + j - 1, A);
     if(j > 2)quick_sort(A, j - 1);
-    
-    for(i = j; i < n - 1; i++){
-        if(A[i] != pivot)break;
-        j++;
-    }
-    if(j < n)quick_sort(A + j, n - j);
+    if(k < n)quick_sort(A + k, n - k);
 }
 
 int main(){
   int i;
-    /*
+/*
   A[0] = 0;
   A[1] = 17; //原始元
   for(i=2;i<N;i++){
     A[i] = (long long int) A[i-1] * A[1] % N;
   }
-     */
+*/
+
 // すべての要素が同じ場合でも計算が早く終わるか確認する
     for(i=0;i<N;i++){
         A[i] = 17;

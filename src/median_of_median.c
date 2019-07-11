@@ -13,25 +13,12 @@ void swap(int *p, int *q){
   *q = tmp;
 }
 
-//  中央値を探し先頭に移動
-void median(int A[], int n){
-  if(n > 5){
-    int size = n / 5;
-    for(int i = 0; i < size; i++){
-      median(A + i * 5, 5);
+//  5以下のnで、サイズnの配列をソートする
+void sort5(int A[], int n){
+  for(int i = n-2; i >= 0; i--){
+    for(int j = 0; j <= i; j++){
+      if(A[j] >A[j+1])swap(A+j, A+j+1);
     }
-    median(A, size);
-    return;
-  }else{
-    int m = (n - 1) / 2;
-    for(int i = 0; i <= m; i++){
-      int minIndex = i;
-      for(int j = i + i; j < n; j++){
-        if(A[minIndex] > A[j])swap(A + minIndex, A + j);
-      }
-    }
-    swap(A, A + m);
-    return;
   }
 }
 
@@ -40,21 +27,38 @@ A[0], A[1], ..., A[n-1] の中でk+1番目に小さい値を返す関数
 ただし、Aの中身は書き換えてしまう。
 */
 int quick_select(int A[], int n, int k){
-  int i, j, pivot;
+  int i, l, r, pivot;
 
-// ピボットを選択する
-  median(A, n);
-  pivot = A[0];
-  for(i = j = 1; i < n; i++){
-    if(A[i] <= pivot){
-      swap(A+i, A+j);
-      j++;
+  if(n > 5){
+    int size = (n+4) / 5;
+    for(int i = 0; i < size; i++){
+      int len = 5*(i+1) <= n ? 5 : n - 5*i;
+      sort5(A, len);
+      swap(A+i, A + 5*i + len/2);
+    }
+    pivot = quick_select(A, size, size/2);
+  }else{
+    sort5(A,n);
+    return A[k];
+  }
+
+  i = 0, l = 0, r = n-1;
+  while(i<= r){
+    if(A[i] < pivot){
+      swap(A+i, A+l);
+      l++;
+      i++;
+    }else if(A[i] > pivot){
+      swap(A+i, A+r);
+      r--;
+    }else{
+      i++;
     }
   }
 
-  if(j == k+1) return pivot;
-  else if(j < k+1) return quick_select(A+j, n-j, k-j);
-  else return quick_select(A+1, j-1, k);
+  if(r < k) return quick_select(A+r+1, n-r-1, k-r-1);
+  else if(l > k) return quick_select(A, l, k);
+  else return pivot;
 }
 
 
